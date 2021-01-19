@@ -39,5 +39,5 @@ foreach ($vm in $file) {
                                 get-vm -Name $vmname | Start-VM
                                 write-host "Server $vmname booting up."}
                         }
-    
+                    }
                                
