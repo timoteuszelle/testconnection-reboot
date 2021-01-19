@@ -2,10 +2,7 @@
 Author: Tim Zelle
 --
 #> 
-$vcenterserver ="" #set the vcenter server  
-Get-Module -ListAvailable *vmware* | Import-Module 
-Add-PSSnapIn vmware*
-Connect-VIServer -Server $vcenterserver -User '' #set the username
+Import-Module "C:\Users\Timoteus\Documents\gihub repo\functions\vcenterserver.psm1"
 $file = (get-content "C:\x.txt") #path for your hosts in file
 
 foreach ($vm in $file) {
