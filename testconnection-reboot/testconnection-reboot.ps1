@@ -2,7 +2,7 @@
 Author: Tim Zelle
 --
 #> 
-Import-Module "C:\Users\Timoteus\Documents\gihub repo\functions\vcenterserver.psm1" -Global
+Import-Module ".\testconnection-reboot\functions\vcenterserver.psm1" -Global
 $file = (get-content "C:\x.txt") 
 
 foreach ($vm in $file) {
