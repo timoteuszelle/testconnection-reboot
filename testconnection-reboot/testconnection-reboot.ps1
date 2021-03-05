@@ -34,7 +34,7 @@ foreach ($vm in $file)
                     write-host "Server $vmname is not responding."
                     $nicinfo = (get-vm -name $vmname | Get-NetworkAdapter)
                     if ($nicinfo.ConnectionState.Connected -eq $false) {
-                                                            get-vm -name $vmname | Get-NetworkAdapter | Set-NetworkAdapter -confirm:$false -Connected:$true -StartConnected:$true 
+                                                            $networksetting = get-vm -name $vmname | Get-NetworkAdapter | Set-NetworkAdapter -confirm:$false -Connected:$true -StartConnected:$true 
                                                             Write-Host "NIC was set on disconnected. The NIC will be set to connected and startconnected on."
                                                             $testrslt =(Test-Connection -Quiet -ComputerName $vmname -count 2) 
                                                             if ($testrslt -eq $true) {
@@ -47,8 +47,8 @@ foreach ($vm in $file)
                                                             {
                                                             write-host "Server $vmname is not responding while NIC is set as connected."
                                                             write-host "Server $vmname will reboot."
-                                                            get-vm -Name $vmname | Stop-VM -confirm:$false
-                                                            get-vm -Name $vmname | Start-VM
+                                                            $stop = get-vm -Name $vmname | Stop-VM -confirm:$false
+                                                            $start = get-vm -Name $vmname | Start-VM
                                                             write-host "Server $vmname booting up."
                                                             $recheck += ,$vmname
                                                             }}
@@ -56,8 +56,8 @@ foreach ($vm in $file)
                     else {
                     write-host "Server $vmname is not responding while NIC is set as connected."
                     write-host "Server $vmname will reboot."
-                    get-vm -Name $vmname | Stop-VM -confirm:$false
-                    get-vm -Name $vmname | Start-VM
+                    $stop = get-vm -Name $vmname | Stop-VM -confirm:$false
+                    $start = get-vm -Name $vmname | Start-VM
                     write-host "Server $vmname booting up."
                     $recheck += ,$vmname
                     }
@@ -75,8 +75,8 @@ foreach ($vm in $recheck)
         else {
                 write-host "Server recheck $vmname is not responding."
                 write-host "Server $vmname will reboot and logged."
-                get-vm -Name $vmname | Stop-VM -confirm:$false
-                get-vm -Name $vmname | Start-VM
+                $stop = get-vm -Name $vmname | Stop-VM -confirm:$false
+                $start = get-vm -Name $vmname | Start-VM
                 write-host "Server $vmname booting up."
                 Add-Content $log "$vmname ; $date"
                 }
