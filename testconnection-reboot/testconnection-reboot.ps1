@@ -19,7 +19,7 @@ foreach ($vm in $file)
                     $nicinfo = (get-vm -name $vmname | Get-NetworkAdapter)
                     if ($nicinfo.ConnectionState.Connected -eq $false) {
                                                             get-vm -name $vmname | Get-NetworkAdapter | Set-NetworkAdapter -Connected:$true -StartConnected:$true
-                                                            Write-Host "NIC was set on disconnected. The NIC will be set to connected and startconnected on."
+                                                            Write-Host "NIC was set on disconnected. The NIC will be set to connected and startconnected will be set on."
                                                             $testrslt =(Test-Connection -Quiet -ComputerName $vmname -count 2) 
                                                             if ($testrslt -eq $true) {
                                                             write-host "Server $vmname is up now."
