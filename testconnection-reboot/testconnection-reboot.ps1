@@ -63,7 +63,7 @@ foreach ($vm in $file)
                     }
                     }
                     }         
-
+start-sleep -Seconds 30
 foreach ($vm in $recheck)
 { 
         $vmname = Get-VM -name $vm 
