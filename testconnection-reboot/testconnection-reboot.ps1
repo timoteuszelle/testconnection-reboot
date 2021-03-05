@@ -18,7 +18,9 @@ Get-Module -ListAvailable *vmware* | Import-Module
 Add-PSSnapIn vmware*
 Connect-VIServer -Server $vcenterserver -Credential $credential 
 $log = "c:\temp\connectiontest.log"
+$nic = "c:\temp\connectiontestnic.log"
 $date = get-date
+$recheck = @()
 foreach ($vm in $file)
 { 
         $vmname = Get-VM -name $vm 
@@ -32,12 +34,12 @@ foreach ($vm in $file)
                     write-host "Server $vmname is not responding."
                     $nicinfo = (get-vm -name $vmname | Get-NetworkAdapter)
                     if ($nicinfo.ConnectionState.Connected -eq $false) {
-                                                            get-vm -name $vmname | Get-NetworkAdapter | Set-NetworkAdapter -Connected:$true -StartConnected:$true
+                                                            get-vm -name $vmname | Get-NetworkAdapter | Set-NetworkAdapter -confirm:$false -Connected:$true -StartConnected:$true 
                                                             Write-Host "NIC was set on disconnected. The NIC will be set to connected and startconnected on."
                                                             $testrslt =(Test-Connection -Quiet -ComputerName $vmname -count 2) 
                                                             if ($testrslt -eq $true) {
-                                                            write-host "Server $vmname is up now."
-                                                            Add-Content $log "$vmname ; $date ; NIC"
+                                                            write-host "Server $vmname is up now. Server is logged in $nic"
+                                                            Add-Content $nic "$vmname ; $date"
                                                             }
                                                             
                                                             
@@ -48,7 +50,7 @@ foreach ($vm in $file)
                                                             get-vm -Name $vmname | Stop-VM -confirm:$false
                                                             get-vm -Name $vmname | Start-VM
                                                             write-host "Server $vmname booting up."
-                                                            Add-Content $log "$vmname ; $date"
+                                                            $recheck += ,$vmname
                                                             }}
                                                             
                     else {
@@ -57,7 +59,25 @@ foreach ($vm in $file)
                     get-vm -Name $vmname | Stop-VM -confirm:$false
                     get-vm -Name $vmname | Start-VM
                     write-host "Server $vmname booting up."
-                    Add-Content $log "$vmname ; $date"
+                    $recheck += ,$vmname
                     }
                     }
                     }         
+
+foreach ($vm in $recheck)
+{ 
+        $vmname = Get-VM -name $vm 
+        $testrslt =(Test-Connection -Quiet -ComputerName $vmname -count 2) 
+        if ($testrslt -eq $true)
+        {
+                write-host "Server recheck $vmname is up."
+                }
+        else {
+                write-host "Server recheck $vmname is not responding."
+                write-host "Server $vmname will reboot and logged."
+                get-vm -Name $vmname | Stop-VM -confirm:$false
+                get-vm -Name $vmname | Start-VM
+                write-host "Server $vmname booting up."
+                Add-Content $log "$vmname ; $date"
+                }
+}
