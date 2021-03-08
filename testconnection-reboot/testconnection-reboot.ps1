@@ -9,19 +9,22 @@ The best practice to use a service account, note, the encrypted file needs to be
 It will test the vm for connection, if the NIC was disconnected it will be connected, if the host doesn't respond, it will reboot.
 Run this from your admin / jump host.
 #> 
-$file = (get-content -path c:\temp\temp.txt)
-$username = "svc_user"
-$encrypted = Get-Content "C:\temp\encrypted_password1.txt" | ConvertTo-SecureString
+$variablesettings = Import-csv -Path c:\temp\settings.csv -Delimiter ";" -Header Name, Value, Description
+$selection = ($vmname = Get-VM |Where-Object {$filter})
+$username = $variablesettings[1].Value
+$encrypted = Get-Content $variablesettings[2].Value | ConvertTo-SecureString
 $credential = New-Object System.Management.Automation.PsCredential($username, $encrypted)
-$vcenterserver ="test.domain.ps"
+$vcenterserver = $variablesettings[3].Value
 Get-Module -ListAvailable *vmware* | Import-Module
 Add-PSSnapIn vmware*
 Connect-VIServer -Server $vcenterserver -Credential $credential 
-$log = "c:\temp\connectiontest.log"
-$nic = "c:\temp\connectiontestnic.log"
+$log = $variablesettings[4].Value
+$nic = $variablesettings[5].Value
+$filter = $variablesettings[6].Value
 $date = get-date
 $recheck = @()
-foreach ($vm in $file)
+$filteredvms = $selection
+foreach ($vm in $filteredvms)
 { 
         $vmname = Get-VM -name $vm 
         $testrslt =(Test-Connection -Quiet -ComputerName $vmname -count 2) 
