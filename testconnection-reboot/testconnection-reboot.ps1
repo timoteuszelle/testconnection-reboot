@@ -15,9 +15,9 @@ $username = $variablesettings[2].Value
 $encrypted = Get-Content $variablesettings[1].Value | ConvertTo-SecureString
 $credential = New-Object System.Management.Automation.PsCredential($username, $encrypted)
 $vcenterserver = $variablesettings[3].Value
-Get-Module -ListAvailable *vmware* | Import-Module
-Add-PSSnapIn vmware*
-Connect-VIServer -Server $vcenterserver -Credential $credential 
+Get-Module -ListAvailable *vmware* | Import-Module | Out-Null
+Add-PSSnapIn vmware* | Out-Null
+Connect-VIServer -Server $vcenterserver -Credential $credential | Out-Null
 $log = $variablesettings[5].Value
 $nic = $variablesettings[6].Value
 $filter = $variablesettings[4].Value
@@ -86,3 +86,5 @@ foreach ($vm in $recheck)
                 Add-Content $log "$vmname ; $date"
                 }
 }
+Read-Host "Press any key to exit..."
+exit
