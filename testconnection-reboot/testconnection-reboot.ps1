@@ -11,7 +11,7 @@ It will fix the most simple unresponsive systems and common faults of a not conn
 --
 #> 
 $variablesettings = Import-csv -Path c:\temp\settings.csv -Delimiter ";"
-$selection = ($vmname = Get-VM |Where-Object {$_.Name -like "$filter"} -and {$_.powerstate -ne "PoweredOff"})
+$selection = ($vmname = Get-VM |Where-Object {$_.Name -like "$filter"} )
 $username = $variablesettings[2].Value
 $encrypted = Get-Content $variablesettings[1].Value | ConvertTo-SecureString
 $credential = New-Object System.Management.Automation.PsCredential($username, $encrypted)
@@ -55,6 +55,7 @@ foreach ($vm in $filteredvms)
                                                             get-vm -Name $vmname | Start-VM | Out-Null
                                                             write-host "Server $vmname booting up."
                                                             $recheck += ,$vmname
+                                                            Add-Content $nic "$vmname ; $date"
                                                             }}
                                                             
                     else {
