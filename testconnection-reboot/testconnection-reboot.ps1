@@ -21,7 +21,7 @@ Connect-VIServer -Server $vcenterserver -Credential $credential
 $log = $variablesettings[5].Value
 $nic = $variablesettings[6].Value
 $filter = $variablesettings[4].Value
-$selection = ($vmname = Get-VM |Where-Object {$_.Name -like "$filter"})
+$selection = ($vmname = Get-VM |Where-Object {($_.Name -like "$filter") -and ($_.PowerState -eq "Poweredon")})
 $date = get-date
 $recheck = @()
 $filteredvms = $selection
