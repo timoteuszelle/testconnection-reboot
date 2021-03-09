@@ -14,25 +14,25 @@ $filter = read-host 'type a filter, for example ($_.name -like test)'
 $log0 = "$file\$logname0"
 $log1 = "$file\$logname1"
 $settings = @(  [PSCustomObject]@{
-    Name = 'File location' ; Value = $file ; Description = 'Input file location root for input and output files'
+    Name = 'File location' ; Value = $file ; Description = 'Input file location root for input and output files?'
 }  
                 [PSCustomObject]@{
-    Name = 'Password file' ; Value = $encrypted ; Description = 'location of encrypyed password file'
+    Name = 'Password file' ; Value = $encrypted ; Description = 'location of encrypyed password file?'
 }
                 [PSCustomObject]@{
-    Name = 'Username' ; Value = $username ; Description = 'Input of username, admin account of service account for example'
+    Name = 'Username' ; Value = $username ; Description = 'Input of username, for example, admin account or service account?'
 }
                 [PSCustomObject]@{
-    Name = 'Vcenter' ; Value = $vcenterserver ; Description = 'Input hostname or ip of vCenter server'
+    Name = 'Vcenter' ; Value = $vcenterserver ; Description = 'Input hostname or ip of vCenter server?'
 }
                 [PSCustomObject]@{
-    Name = 'Filter' ; Value = $filter ; Description = 'input filters, for example: $_.name -like'
+    Name = 'Filter' ; Value = $filter ; Description = 'input filters, for example: $_.name -like?'
 }
                 [PSCustomObject]@{
-    Name = 'Log file F' ; Value = $log0 ; Description = 'Setting for name and location log F file'
+    Name = 'Log file F' ; Value = $log0 ; Description = 'Setting for name and location log F file?'
 }
                 [PSCustomObject]@{
-    Name = 'Log file N' ; Value = $log1 ; Description = 'Setting for name and location log N file'
+    Name = 'Log file N' ; Value = $log1 ; Description = 'Setting for name and location log N file?'
 }  
 )
 $settings | Export-Csv -path $file\settings.csv -NoTypeInformation -Delimiter ";"
