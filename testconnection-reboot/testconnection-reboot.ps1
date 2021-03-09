@@ -1,16 +1,17 @@
 <#
 Author: Tim Zelle
 --
-If you need to use your admin account, because you want to schedule things, auto fix stuff while you sleep.
-$credential = Get-Credential
-$credential.Password | ConvertFrom-SecureString | Set-Content "C:\temp\encrypted_password1.txt"
+Testconnection-reboot:
+The filter variable is used to define vm based on powerstatus and ore names, or any other filter if you like.
 The best practice to use a service account, note, the encrypted file needs to be created on the same host it will be read to work.
 --
 It will test the vm for connection, if the NIC was disconnected it will be connected, if the host doesn't respond, it will reboot.
 Run this from your admin / jump host.
+It will fix the most simple unresponsive systems and common faults of a not connected NIC.
+--
 #> 
 $variablesettings = Import-csv -Path c:\temp\settings.csv -Delimiter ";"
-$selection = ($vmname = Get-VM |Where-Object {$filter})
+$selection = ($vmname = Get-VM |Where-Object {$_.Name -like "$filter"} -and {$_.powerstate -ne "PoweredOff"})
 $username = $variablesettings[2].Value
 $encrypted = Get-Content $variablesettings[1].Value | ConvertTo-SecureString
 $credential = New-Object System.Management.Automation.PsCredential($username, $encrypted)
