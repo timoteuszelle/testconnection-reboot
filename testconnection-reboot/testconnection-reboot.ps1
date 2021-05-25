@@ -2,12 +2,12 @@
 Author: Tim Zelle
 --
 Testconnection-reboot:
-The filter variable is used to define vm based on powerstatus and ore names, or any other filter if you like.
-The best practice to use a service account, note, the encrypted file needs to be created on the same host it will be read to work.
+The filter variable is used to define vm based on powerstatus and/or any other filter if you like.
+The best practice to use a service account
+Note: the encrypted password file needs to be created on the same host as it will be read for it to be read back as the password.
 --
-It will test the vm for connection, if the NIC was disconnected it will be connected, if the host doesn't respond, it will reboot.
-Run this from your admin / jump host.
-It will fix the most simple unresponsive systems and common faults of a not connected NIC.
+This sscript will test the vm for connectivity, if the NIC was disconnected it will be connected, if the host doesn't respond, it will reboot and checked again.
+Host that were disconnected and didn't respond will be logged seperately. 
 --
 #> 
 $variablesettings = Import-csv -Path c:\temp\settings.csv -Delimiter ";"
