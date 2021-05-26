@@ -1,34 +1,34 @@
 graph TB
 A -.-> B;
-A ----> C{C};
-C --> D;
-C --> E;
-D -.-> C;
-C -.- B;
+A ------> C{C};
+C ---> D;
+C ---> E;
 E --> F{F};
 F --> G;
 F --> H;
-H --> I;
-I -.-> C;
-G -.- C;
-H ----> J{J};
+H ----> I;
+I -.-> B;
+G -.- B;
+H -----> J{J};
 J --> K;
 J --> L;
 L --> M;
-M -.- C;
-K -.- C;
-K --> M;
-D -.-> B
+M -.-> B;
+K ---> M;
+B ----> N;
+B --- C;
+D -.-> B;
 A(Start)
-B[done]
+B{Continue Loop}
 C{Check connection}
 D(Connected)
 E(Not connected)
 F{Check NIC}
 G(Connected)
 H(Not Connected)
-I[log]
+I[Log]
 J{After Nic Check}
 M[Log]
 L(Connected)
 K(Not Connected)
+N[Exit loop]
