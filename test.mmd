@@ -1,28 +1,29 @@
-graph TB
-A -.-> B;
-A ------> C{C};
+flowchart TB
+N & A;
+A <-.->|List of VMs >0?| B;
+A ------> C;
 C ---> D;
-C ---> E;
-E --> F{F};
-F --> G;
-F --> H;
+C --->|reboot| E;
+E --> F;
+F ---->|NIC Enabled| G;
+F ---->|NIC Enabled & reboot| H;
 H ----> I;
 I -.-> B;
-G -.- B;
-H -----> J{J};
+G -.-> B;
+H ----->|reboot| J;
 J --> K;
-J --> L;
-L --> M;
+J -----> L;
+L ---> M;
 M -.-> B;
 K ---> M;
-B ----> N;
-B --- C;
+B ---->|no| N;
+B ---|yes| C;
 D -.-> B;
-A(Start)
-B{Continue Loop}
+A(Start Loop)
+B{Continue Loop?}
 C{Check connection}
 D(Connected)
-E(Not connected)
+E(Not Connected)
 F{Check NIC}
 G(Connected)
 H(Not Connected)
@@ -31,4 +32,4 @@ J{After Nic Check}
 M[Log]
 L(Connected)
 K(Not Connected)
-N[Exit loop]
+N[Exit Loop]
