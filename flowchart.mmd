@@ -16,9 +16,11 @@ J -----> L;
 L ---> M;
 M -.-> B;
 K ---> M;
-B ---->|no| N;
-B ---|yes| C;
+B ---->|"(List of VMs >0?) No"| N;
+B --->|"(List of VMs >0?) Yes"| C;
 D -.-> B;
+O & A; 
+O -.-
 A(Start Loop)
 B{Continue Loop?}
 C{Check connection}
@@ -33,3 +35,4 @@ M[Log]
 L(Connected)
 K(Not Connected)
 N[Exit Loop]
+O[input List of VMs For loop] 
